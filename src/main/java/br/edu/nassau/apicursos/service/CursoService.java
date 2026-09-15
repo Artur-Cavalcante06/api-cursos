@@ -1,6 +1,6 @@
 package br.edu.nassau.apicursos.service;
 
-import br.edu.nassau.apicursos.Curso;
+import br.edu.nassau.apicursos.model.Curso;
 import br.edu.nassau.apicursos.repository.CursoRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,31 +16,60 @@ public class CursoService {
     }
 
     public List<Curso> listarCursos() {
-        return cursoRepository.listarTodos();
+        return cursoRepository.findAll();
     }
 
     public Curso cadastrarCurso(Curso curso) {
+
+        if (curso.getNome() == null || curso.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome do curso é obrigatório.");
+        }
+
+        if (curso.getCargaHoraria() == null || curso.getCargaHoraria() <= 0) {
+            throw new IllegalArgumentException("A carga horária deve ser maior que zero.");
+        }
+
         curso.setId(null);
-        return cursoRepository.salvar(curso);
+
+        return cursoRepository.save(curso);
     }
 
     public Curso buscarCursoPorId(Long id) {
-        return cursoRepository.buscarPorId(id);
+        return cursoRepository.findById(id).orElse(null);
     }
 
     public Curso atualizarCurso(Long id, Curso cursoAtualizado) {
-        Curso curso = cursoRepository.buscarPorId(id);
+
+        Curso curso = cursoRepository.findById(id).orElse(null);
 
         if (curso == null) {
             return null;
         }
 
-        cursoAtualizado.setId(id);
+        if (cursoAtualizado.getNome() == null || cursoAtualizado.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome do curso é obrigatório.");
+        }
 
-        return cursoRepository.atualizar(cursoAtualizado);
+        if (cursoAtualizado.getCargaHoraria() == null || cursoAtualizado.getCargaHoraria() <= 0) {
+            throw new IllegalArgumentException("A carga horária deve ser maior que zero.");
+        }
+
+        curso.setNome(cursoAtualizado.getNome());
+        curso.setCargaHoraria(cursoAtualizado.getCargaHoraria());
+
+        return cursoRepository.save(curso);
     }
 
     public boolean excluirCurso(Long id) {
-        return cursoRepository.excluir(id);
+
+        Curso curso = cursoRepository.findById(id).orElse(null);
+
+        if (curso == null) {
+            return false;
+        }
+
+        cursoRepository.delete(curso);
+
+        return true;
     }
 }

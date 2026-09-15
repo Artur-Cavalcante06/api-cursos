@@ -1,5 +1,6 @@
-package br.edu.nassau.apicursos;
+package br.edu.nassau.apicursos.controller;
 
+import br.edu.nassau.apicursos.model.Curso;
 import br.edu.nassau.apicursos.service.CursoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
