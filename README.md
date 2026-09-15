@@ -45,3 +45,83 @@ A API de cursos oferecerá as seguintes operações:
 | DELETE | `/cursos/{id}` | Remover um curso | 204 No Content ou 404 Not Found |
 
 Esses endpoints formam o CRUD da API de cursos.
+## Atividade 04 — Arquitetura em camadas
+
+O projeto foi organizado em camadas para separar as responsabilidades da aplicação:
+
+- **Controller:** recebe as requisições HTTP e devolve as respostas.
+- **Service:** contém as regras de negócio da aplicação.
+- **Repository:** responsável pelo acesso aos dados.
+- **Model:** representa a entidade Curso.
+
+### Estrutura do projeto
+
+```text
+br.edu.nassau.apicursos
+├── controller
+│   └── CursoController.java
+├── model
+│   └── Curso.java
+├── repository
+│   └── CursoRepository.java
+└── service
+    └── CursoService.java
+O Controller não acessa diretamente o banco de dados. As requisições passam pelo Service, que utiliza o Repository para realizar as operações de persistência.
+
+## Atividade 05 — PostgreSQL e JPA
+
+A aplicação foi configurada para utilizar o PostgreSQL como banco de dados.
+
+Banco utilizado:
+
+- **Nome:** api_cursos
+- **SGBD:** PostgreSQL
+- **Tabela:** cursos
+
+A entidade `Curso` foi configurada com JPA utilizando `@Entity`, `@Table`, `@Id` e `@GeneratedValue`.
+
+O acesso ao banco é realizado pelo `CursoRepository`, que utiliza `JpaRepository`.
+
+## Endpoints da API
+
+| Método | Endpoint | Descrição |
+|---|---|---|
+| GET | `/cursos` | Lista todos os cursos |
+| GET | `/cursos/{id}` | Busca um curso pelo ID |
+| POST | `/cursos` | Cadastra um curso |
+| PUT | `/cursos/{id}` | Atualiza um curso |
+| DELETE | `/cursos/{id}` | Exclui um curso |
+
+## Testes realizados
+
+Foram realizados testes dos principais endpoints da API:
+
+- Cadastro de curso com `POST /cursos`.
+- Listagem com `GET /cursos`.
+- Busca por ID com `GET /cursos/{id}`.
+- Atualização com `PUT /cursos/{id}`.
+- Exclusão com `DELETE /cursos/{id}`.
+- Verificação do código HTTP `204` após exclusão.
+- Verificação dos dados diretamente no PostgreSQL.
+
+## Persistência dos dados
+
+Foi realizado um teste de persistência:
+
+1. Um curso foi cadastrado na API.
+2. O registro foi confirmado no PostgreSQL.
+3. A aplicação Spring Boot foi encerrada.
+4. A aplicação foi iniciada novamente.
+5. O curso continuou disponível através do endpoint `GET /cursos`.
+
+Esse teste confirmou que os dados estão sendo persistidos no PostgreSQL e não apenas mantidos em memória.
+
+## Tecnologias utilizadas
+
+- Java 21
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- PostgreSQL
+- Maven
+- Git
