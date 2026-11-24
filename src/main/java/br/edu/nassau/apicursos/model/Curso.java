@@ -1,10 +1,7 @@
+
 package br.edu.nassau.apicursos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cursos")
@@ -15,16 +12,20 @@ public class Curso {
     private Long id;
 
     private String nome;
-
     private Integer cargaHoraria;
+    private String descricao;
+    private String categoria;
 
     public Curso() {
     }
 
-    public Curso(Long id, String nome, Integer cargaHoraria) {
+    public Curso(Long id, String nome, Integer cargaHoraria,
+                 String descricao, String categoria) {
         this.id = id;
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
+        this.descricao = descricao;
+        this.categoria = categoria;
     }
 
     public Long getId() {
@@ -50,4 +51,21 @@ public class Curso {
     public void setCargaHoraria(Integer cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 }
+
