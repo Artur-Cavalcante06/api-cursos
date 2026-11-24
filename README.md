@@ -125,3 +125,109 @@ Esse teste confirmou que os dados estão sendo persistidos no PostgreSQL e não 
 - PostgreSQL
 - Maven
 - Git
+
+## Conteinerização com Docker
+
+A API foi conteinerizada utilizando Docker, permitindo a
+execução da aplicação em um ambiente isolado e padronizado.
+
+Foi criado um Dockerfile responsável por configurar o
+ambiente Java e executar o arquivo JAR da aplicação.
+
+## Docker Compose
+
+O Docker Compose foi utilizado para gerenciar dois serviços:
+
+- API de Cursos com Spring Boot.
+- Banco de dados PostgreSQL 18.
+
+Também foram configurados:
+
+- Rede interna para comunicação entre os containers.
+- Volume persistente para armazenamento dos dados.
+- Healthcheck para verificar a disponibilidade do PostgreSQL.
+- Variáveis de ambiente para proteger a senha do banco.
+
+### Executando o projeto
+
+Defina a variável de ambiente no PowerShell:
+
+```powershell
+$env:DB_PASSWORD="sua_senha"
+```
+
+Gere o arquivo JAR da aplicação:
+
+```powershell
+.\mvnw.cmd clean package -DskipTests
+```
+
+Inicie os containers:
+
+```bash
+docker compose up -d --build
+```
+
+Verifique os containers:
+
+```bash
+docker compose ps
+```
+
+Para encerrar os serviços:
+
+```bash
+docker compose down
+```
+
+## Monitoramento com Spring Boot Actuator
+
+Foi implementado o Spring Boot Actuator para monitorar
+a disponibilidade da aplicação.
+
+Endpoint de monitoramento:
+
+http://localhost:8080/actuator/health
+
+O retorno com status UP indica que a aplicação está saudável.
+
+## Testes unitários
+
+Foi criada a classe CursoServiceTest para testar
+as regras de negócio da camada de serviço.
+
+Os testes utilizam JUnit e Mockito.
+
+Para executar os testes unitários:
+
+```powershell
+.\mvnw.cmd test "-Dtest=CursoServiceTest"
+```
+
+## Persistência com Docker
+
+Foi realizado um teste de persistência dos dados:
+
+1. Cadastro de um curso na API.
+2. Encerramento dos containers.
+3. Inicialização dos containers novamente.
+4. Consulta dos cursos cadastrados.
+
+O registro permaneceu disponível após a recriação dos
+containers, confirmando o funcionamento do volume persistente.
+
+## Segurança das configurações
+
+A senha do banco de dados é fornecida por variável de
+ambiente, evitando sua exposição direta no código-fonte.
+
+O arquivo .gitignore foi atualizado para impedir o
+versionamento de arquivos de ambiente e logs.
+
+## Tecnologias adicionadas
+
+- Docker
+- Docker Compose
+- Spring Boot Actuator
+- JUnit
+- Mockito
